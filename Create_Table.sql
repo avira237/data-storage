@@ -31,10 +31,12 @@ CREATE TABLE Dim_Patient (
 CREATE TABLE Dim_Procedures (
     procedures_id INT PRIMARY KEY,
     code VARCHAR(50),
+	encounter_id INT,
     description VARCHAR(255),
     base_cost DECIMAL(18,2),
     reason_code VARCHAR(50),
-    reason_description VARCHAR(255)
+    reason_description VARCHAR(255),
+	FOREIGN KEY (encounter_id) REFERENCES Fact_Encounter(encounter_id),
 );
 
 -- Create Dim_Payers Table
@@ -82,7 +84,6 @@ CREATE TABLE Dim_Date (
 CREATE TABLE Fact_Encounter (
     patient_id INT,
     hospital_id INT,
-    procedures_id INT,
     payer_id INT,
     date_id INT,
     department_id INT,
@@ -91,7 +92,6 @@ CREATE TABLE Fact_Encounter (
     total_cost DECIMAL(18,2),
     FOREIGN KEY (patient_id) REFERENCES Dim_Patient(patient_id),
     FOREIGN KEY (hospital_id) REFERENCES Dim_Hospital(hospital_id),
-    FOREIGN KEY (procedures_id) REFERENCES Dim_Procedures(procedures_id),
     FOREIGN KEY (payer_id) REFERENCES Dim_Payers(payer_id),
     FOREIGN KEY (date_id) REFERENCES Dim_Date(date_id),
     FOREIGN KEY (department_id) REFERENCES Dim_Department(department_id)
